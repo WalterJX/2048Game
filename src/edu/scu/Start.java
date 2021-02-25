@@ -1,11 +1,11 @@
 package edu.scu;
 
-public class StartGame {
+public class Start {
 	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new Menu();
+		new GameWindow();
 		
 	}
 
