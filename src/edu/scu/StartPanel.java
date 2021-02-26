@@ -120,7 +120,7 @@ public class StartPanel extends JPanel{
 	private void startNewGame() {
 		this.setEnabled(false);
 		this.setVisible(false);
-		mainBoard.setContentPane(new ContinueGame());
+		mainBoard.setContentPane(new GamePanel()); // new ContinueGame
 	}
 	private void continueGame() {
 		

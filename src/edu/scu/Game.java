@@ -16,6 +16,7 @@ public class Game {
 	
 	Game(){
 		map = new int[4][4];
+		initGame();
 	}
 	
 	Game(int[][] data) {
@@ -24,13 +25,36 @@ public class Game {
 	
 	Game(int winC){
 		winCondition=winC;
+		initGame();
 	}
 	Game(int[][] data, int winC){
 		map=data;
 		winCondition=winC;
 	}
 	
-	public void randomGenerate() {
+	private void initGame() {
+		//create two "2" and a "4" block in the map
+		createNewBlock(2);
+		createNewBlock(2);
+		createNewBlock(4);
+	}
+	
+	public void createNewBlock() {
+		int pos[] = randomPos();
+		if(pos[0]!=-1) {
+			if(Math.random()>0.5)
+				map[pos[0]][pos[1]]=2;
+			else
+				map[pos[0]][pos[1]]=4;
+		}
+	}
+	public void createNewBlock(int value) {
+		int pos[] = randomPos();
+		if(pos[0]!=-1) 
+			map[pos[0]][pos[1]]=value;
+	}
+	
+	public int[] randomPos() {
 		List<int[]> positions = new ArrayList<int[]>();
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
@@ -39,30 +63,34 @@ public class Game {
 				}
 			}
 		}
+		int[] random = new int[2];
 		if(positions.size()>0) {
-			int[] random = positions.get((int)(Math.random()*positions.size()));
-			map[random[0]][random[1]]=2;
+			random = positions.get((int)(Math.random()*positions.size()));
 		}
+		else {
+			random[0]=-1;//no empty blocks
+		}
+		return random;
 	}
 	
 	public void moveLeft() {
 		mergeAndMoveLeft();
-		randomGenerate();
+		createNewBlock();
 		updateScore();
 	}
 	public void moveRight() {
 		mergeAndMoveRight();
-		randomGenerate();
+		createNewBlock();
 		updateScore();
 	}
 	public void moveUp() {
 		mergeAndMoveUp();
-		randomGenerate();
+		createNewBlock();
 		updateScore();
 	}
 	public void moveDown() {
 		mergeAndMoveDown();
-		randomGenerate();
+		createNewBlock();
 		updateScore();
 	}
 	
@@ -97,7 +125,7 @@ public class Game {
 		return res;
 	}
 	
-	private void updateScore() {
+	public void updateScore() {
 		int sum=0;
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
@@ -165,7 +193,7 @@ public class Game {
 		//if there is an element=winCondition, player win.
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
-				if(map[i][j]==winCondition) {
+				if(map[i][j]>=winCondition) {
 					return true;
 				}
 			}
@@ -211,5 +239,14 @@ public class Game {
 			}
 		}
 		return true;
+	}
+	
+	private void printMap() {
+		for(int i=0;i<4;i++) {
+			for(int j=0;j<4;j++) {
+				System.out.print(map[i][j]+" ");
+			}
+			System.out.println();
+		}
 	}
 }
