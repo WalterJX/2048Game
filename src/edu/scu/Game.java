@@ -5,13 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Game {
-	//public static final int UP = 0;
-	//public static final int DOWN=1;
-	//public static final int LEFT=2;
-	//public static final int RIGHT=3;
 	
 	int map[][];
-	int winCondition=2048;
+	int winCondition=16;
 	int score=0;
 	
 	Game(){

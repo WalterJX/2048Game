@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -11,7 +13,9 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
@@ -32,7 +36,7 @@ public class GamePanel extends JPanel {
 	int frameHeight=600;//???????????????????
 	int blockBorderWidth=6;
 	
-	
+	JFrame frame;
 	Game game;
 	Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	JPanel gameMapPanel = new JPanel();
@@ -42,12 +46,16 @@ public class GamePanel extends JPanel {
 	JLabel blocks[][];
 	JLabel score;
 	
-	GamePanel(){
+	GamePanel(JFrame frame){
+		this.frame=frame;
 		game = new Game();
 		initGUI();
 		refresh();
+		
+		
 	}
-	GamePanel(int[][] map){
+	GamePanel(JFrame frame, int[][] map){
+		this.frame=frame;
 		game = new Game(map);
 		initGUI();
 		refresh();
@@ -99,16 +107,40 @@ public class GamePanel extends JPanel {
 		scorePanel.add(score);
 		
 		buttonsPanel.setLayout(new BorderLayout()); // 想让四个按钮向中间靠拢，也就是center尽可能小。
+		
 		JButton up = new JButton("up");
+		up.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				movup();
+				frame.getContentPane().requestFocus();
+			}
+		});
 		JButton down = new JButton("down");
+		down.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				movdown();
+				frame.getContentPane().requestFocus();
+			}
+		});
 		JButton left = new JButton("left");
+		left.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				movleft();
+				frame.getContentPane().requestFocus();
+			}
+		});
 		JButton right = new JButton("right");
+		right.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				movright();
+				frame.getContentPane().requestFocus();
+			}
+		});
 		buttonsPanel.add(up,BorderLayout.NORTH);
 		buttonsPanel.add(down, BorderLayout.SOUTH);
 		buttonsPanel.add(left, BorderLayout.WEST);
 		buttonsPanel.add(right,BorderLayout.EAST);
 		
-		//需要添加按钮监听  和 键盘监听 //???????????????????????????????????????????
 		
 		this.addKeyListener(new KeyListener() {
 
@@ -118,27 +150,19 @@ public class GamePanel extends JPanel {
 				// TODO Auto-generated method stub
 				switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP:
-	                    game.moveUp();
-	                    refresh();
-	                    checkResult();
+	                    movup();
 	                    break;
 	
 	                case KeyEvent.VK_DOWN:
-	                    game.moveDown();
-	                    refresh();
-	                    checkResult();
+	                    movdown();
 	                    break;
 	
 	                case KeyEvent.VK_LEFT:
-	                    game.moveLeft();
-	                    refresh();
-	                    checkResult();
+	                    movleft();
 	                    break;
 	
 	                case KeyEvent.VK_RIGHT:
-	                	game.moveRight();
-	                	refresh();
-	                	checkResult();
+	                	movright();
 	                    break;
 				}
 			}
@@ -164,9 +188,8 @@ public class GamePanel extends JPanel {
 		this.add(gameMapPanel);
 		this.add(scoreAndButtonPanel);
 		
-		//记得在frame那边requestfocus！！！frame.getcontentPane().requestFocus(); 否则无法监听
 		//??????????????????????????????????????????????????????????不知道下面这三行要不要加
-		this.setVisible(true);
+		//this.setVisible(true);
 		//this.setEnabled(true);
 		this.setFocusable(true);
 	}
@@ -175,7 +198,12 @@ public class GamePanel extends JPanel {
 		//update map and score
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
-				blocks[i][j].setText(""+game.map[i][j]);
+				if(game.map[i][j]!=0)
+					blocks[i][j].setText(""+game.map[i][j]);
+				else
+					blocks[i][j].setText("");
+				blocks[i][j].setBackground(new java.awt.Color(colorMap.get(game.map[i][j]).backGroundColor));
+				blocks[i][j].setForeground(new java.awt.Color(colorMap.get(game.map[i][j]).fontColor));
 			}
 		}
 		game.updateScore();
@@ -191,4 +219,44 @@ public class GamePanel extends JPanel {
 		else return PLAYING;
 	}
 	
+	private void movup() {
+		game.moveUp();
+        refresh();
+        int res = checkResult();
+        if(res!=PLAYING) {
+        	inputNameAndReturn(res);
+        }
+	}
+	private void movdown() {
+		game.moveDown();
+        refresh();
+        int res = checkResult();
+        if(res!=PLAYING) {
+        	inputNameAndReturn(res);
+        }
+	}
+	private void movleft() {
+		game.moveLeft();
+        refresh();
+        int res = checkResult();
+        if(res!=PLAYING) {
+        	inputNameAndReturn(res);
+        }
+	}
+	private void movright() {
+		game.moveRight();
+    	refresh();
+    	int res = checkResult();
+        if(res!=PLAYING) {
+        	inputNameAndReturn(res);
+        }
+	}
+	private void inputNameAndReturn(int res) {
+		if(res==WIN) {
+			JOptionPane.showMessageDialog(null, "Congratulation! ", "You WIN!", JOptionPane.PLAIN_MESSAGE);
+		}
+		else if(res==LOSE) {
+			JOptionPane.showMessageDialog(null, "Sorry, the game is over, your score: " + game.score, "Game Over", JOptionPane.PLAIN_MESSAGE);
+		}
+	}
 }
