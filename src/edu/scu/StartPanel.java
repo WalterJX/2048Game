@@ -120,7 +120,8 @@ public class StartPanel extends JPanel{
 	private void startNewGame() {
 		this.setEnabled(false);
 		this.setVisible(false);
-		mainBoard.setContentPane(new ContinueGame());
+		mainBoard.setContentPane(new GamePanel(mainBoard)); 
+		mainBoard.getContentPane().requestFocus();//must request focus here instead of in the gamepanel, because requestFocus only works after jpanel render
 	}
 	private void continueGame() {
 		
