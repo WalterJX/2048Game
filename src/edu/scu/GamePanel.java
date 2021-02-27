@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import edu.scu.Dao.GameDao;
+import edu.scu.Dao.Score;
+import edu.scu.Dao.ScoreDao;
 
 public class GamePanel extends JPanel {
 	private class Color{
@@ -218,6 +224,24 @@ public class GamePanel extends JPanel {
 		//this.setVisible(true);
 		//this.setEnabled(true);
 		this.setFocusable(true);
+		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+				save();
+			}
+		});
+	}
+	
+	private void save() {
+		Integer[][] data = new Integer[4][4];
+		for(int i=0;i<4;i++) {
+			for(int j=0;j<4;j++) {
+				data[i][j]=game.map[i][j];
+			}
+		}
+		GameDao dao = new GameDao();
+		dao.insertScore(data);
 	}
 	
 	private void refresh() {
@@ -289,6 +313,9 @@ public class GamePanel extends JPanel {
 		
 		//在这里将String playerName，int score 还有系统当前日期。加入到数据库中。
 		int score = game.score;
+		
+		ScoreDao dao = new ScoreDao();
+		dao.insertScore(new Score(playerName,score));
 		
 		this.setEnabled(false);
 		this.setVisible(false);

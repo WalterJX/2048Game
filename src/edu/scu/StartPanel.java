@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.scu.Dao.GameDao;
+
 public class StartPanel extends JPanel{
 	
 	private JFrame mainBoard;
@@ -92,7 +94,7 @@ public class StartPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				continueGame();
-				mainBoard.dispose();
+				//mainBoard.dispose();
 			}
 			
 		});
@@ -124,6 +126,19 @@ public class StartPanel extends JPanel{
 		mainBoard.getContentPane().requestFocus();//must request focus here instead of in the gamepanel, because requestFocus only works after jpanel render
 	}
 	private void continueGame() {
+		GameDao dao = new GameDao();
+		Integer[][] data = dao.getGame();
+		int [][] map = new int[4][4];
+		for(int i=0;i<4;i++) {
+			for(int j=0;j<4;j++) {
+				map[i][j]=data[i][j];
+			}
+		}
+		
+		this.setEnabled(false);
+		this.setVisible(false);
+		mainBoard.setContentPane(new GamePanel(mainBoard, map));
+		mainBoard.getContentPane().requestFocus();
 		
 	}
 	private void seeRanking() {

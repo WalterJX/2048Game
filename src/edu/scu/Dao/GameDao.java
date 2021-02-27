@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GameDao extends BaseDao{
 	
-	private Integer[][] getGame() {
+	public Integer[][] getGame() {
 		Integer[][] game = null;
 		
         try{
@@ -39,7 +39,7 @@ public class GameDao extends BaseDao{
 		return res;
 		
 	}
-	private Integer insertScore(Integer[][] game) {
+	public Integer insertScore(Integer[][] game) {
 		
 		int res = 0;
         try{
