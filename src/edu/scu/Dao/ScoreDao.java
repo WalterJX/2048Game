@@ -29,7 +29,7 @@ public class ScoreDao extends BaseDao{
         }
 		return res;
 	}
-	private Integer insertScore(Score score) {
+	public Integer insertScore(Score score) {
 		
 		int res = 0;
         try{

@@ -7,7 +7,7 @@ import java.util.List;
 public class Game {
 	
 	int map[][];
-	int winCondition=16;
+	int winCondition=2048;
 	int score=0;
 	
 	Game(){
