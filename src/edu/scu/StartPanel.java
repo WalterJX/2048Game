@@ -1,5 +1,6 @@
 package edu.scu;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -29,6 +30,8 @@ public class StartPanel extends JPanel{
 	
 	private void initUI() {
 		
+		
+		setBackground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(newLine(Box.createVerticalStrut(25)));
 		
@@ -91,8 +94,7 @@ public class StartPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				continueGame();
-				mainBoard.dispose();
+				continueGame();			
 			}
 			
 		});
@@ -100,8 +102,7 @@ public class StartPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				seeRanking();
-				mainBoard.dispose();
+				seeRanking();	
 			}
 			
 		});
@@ -110,7 +111,6 @@ public class StartPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exit();
-				mainBoard.dispose();
 			}
 			
 		});
@@ -125,9 +125,13 @@ public class StartPanel extends JPanel{
 	}
 	private void continueGame() {
 		
+		
 	}
 	private void seeRanking() {
-		
+		this.setEnabled(false);
+		this.setVisible(false);
+		mainBoard.setContentPane(new CheckRankingPanel(mainBoard)); 
+		mainBoard.getContentPane().requestFocus();
 	}
 	private void exit() {
 		System.exit(0);

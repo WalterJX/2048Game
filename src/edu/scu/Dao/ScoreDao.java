@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ScoreDao extends BaseDao{
 	
-	private List<Score> getAllScores() {
+	public List<Score> getAllScores() {
 		List<Score> res = new ArrayList<>();
 		
         try{

@@ -1,5 +1,7 @@
 package edu.scu;
 
+import edu.scu.Dao.GameDao;
+
 public class Start {
 	
 
