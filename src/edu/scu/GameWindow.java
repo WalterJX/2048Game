@@ -17,7 +17,6 @@ public class GameWindow extends JFrame{
 		
 		
 		setContentPane(new StartPanel(this));
-		//setContentPane(new GamePanel(this));
 		
 		setVisible(true);
 	}
