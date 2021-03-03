@@ -39,8 +39,8 @@ public class GamePanel extends JPanel {
 	private final int LOSE=2;
 	private final int PLAYING=0;
 	
-	int frameWidth=800;//???????????????
-	int frameHeight=600;//???????????????????
+	int frameWidth=800;
+	int frameHeight=600;
 	int blockBorderWidth=6;
 	
 	JFrame frame;
@@ -67,7 +67,6 @@ public class GamePanel extends JPanel {
 		initGUI();
 		refresh();
 	}
-	//要不要加上一个对胜利条件的设置？????????????????????????????????
 	
 	private void initGUI() {
 		colorMap.put(0, new Color(0x776e65, 0xCDC1B4));
@@ -86,14 +85,14 @@ public class GamePanel extends JPanel {
 		//set layout, add in content. add listener
 		this.setBackground(new java.awt.Color(0xCDC1B4)); // background color
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		gameMapPanel.setLayout(new GridLayout(4,4));// 这里怎么搞个尺寸，最好是比例的。
+		gameMapPanel.setLayout(new GridLayout(4,4));
 		gameMapPanel.setPreferredSize(new Dimension(frameWidth*2/3,frameHeight));
 		blocks = new JLabel[4][4];
 		JLabel block;
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
 				blocks[i][j]=new JLabel("0",JLabel.CENTER);
-				blocks[i][j].setOpaque(true);//?????????????????????????
+				blocks[i][j].setOpaque(true);
 				blocks[i][j].setBorder(BorderFactory.createMatteBorder(blockBorderWidth, blockBorderWidth, blockBorderWidth, blockBorderWidth, new java.awt.Color(0xBBADA0)));
 				blocks[i][j].setFont(new java.awt.Font("Dialog", 1, 52));
 				gameMapPanel.add(blocks[i][j]);
@@ -102,15 +101,34 @@ public class GamePanel extends JPanel {
 		
 		scoreAndButtonPanel.setLayout(new GridLayout(2,1));
 		
-		scorePanel.setLayout(new GridLayout(2,1));//怎么使得上面的“Score”小，下面的分数大？
+		scorePanel.setLayout(new GridLayout(2,1));
 		scorePanel.setPreferredSize(new Dimension(frameWidth/3,frameHeight/2));
+		JPanel scoreTitleAndExitButton = new JPanel();
+		scoreTitleAndExitButton.setLayout(new GridLayout(2,1));
 		JLabel scoreTitle = new JLabel("Score: ", JLabel.CENTER);
 		score = new JLabel("0", JLabel.CENTER);
-		scoreTitle.setOpaque(true);//这有啥用？？？？？？
-		score.setOpaque(true);//????????????
-		scoreTitle.setFont(new java.awt.Font("Dialog", 1, 52));//字体大小不一样有用吗？
+		scoreTitle.setOpaque(true);
+		score.setOpaque(true);
+		scoreTitle.setFont(new java.awt.Font("Dialog", 1, 52));
 		score.setFont(new java.awt.Font("Dialog", 1, 52));
-		scorePanel.add(scoreTitle);
+		
+		JPanel exitPanel = new JPanel();
+		exitPanel.setLayout(new GridLayout(4,1));
+		JButton exit = new JButton("Save and Return to Menu");
+		exit.setBorderPainted(false);
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				save();
+				frame.getContentPane().setEnabled(false);
+				frame.getContentPane().setVisible(false);
+				frame.setContentPane(new StartPanel(frame));
+			}
+		});
+		exitPanel.add(exit);
+		
+		scoreTitleAndExitButton.add(exitPanel);
+		scoreTitleAndExitButton.add(scoreTitle);
+		scorePanel.add(scoreTitleAndExitButton);
 		scorePanel.add(score);
 		
 		buttonsPanel.setLayout(new GridLayout(3,3));
@@ -151,12 +169,6 @@ public class GamePanel extends JPanel {
 				frame.getContentPane().requestFocus();
 			}
 		});
-		/*
-		buttonsPanel.add(up,BorderLayout.NORTH);
-		buttonsPanel.add(down, BorderLayout.SOUTH);
-		buttonsPanel.add(left, BorderLayout.WEST);
-		buttonsPanel.add(right,BorderLayout.EAST);
-		*/
 		
 		for(int i=0;i<9;i++) {
 			switch(i) {
@@ -205,15 +217,12 @@ public class GamePanel extends JPanel {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
-			
 		});
 		
 		scoreAndButtonPanel.add(scorePanel);
@@ -221,8 +230,6 @@ public class GamePanel extends JPanel {
 		this.add(gameMapPanel);
 		this.add(scoreAndButtonPanel);
 		
-		//this.setVisible(true);
-		//this.setEnabled(true);
 		this.setFocusable(true);
 		
 		frame.addWindowListener(new WindowAdapter() {
@@ -309,14 +316,13 @@ public class GamePanel extends JPanel {
 		else if(res==LOSE) {
 			playerName = JOptionPane.showInputDialog("Game over. Please input your name.");  
 		}
-		//后续优化，可以在用户选择“取消cancell”时，不记录到数据库中。
-		
-		//在这里将String playerName，int score 还有系统当前日期。加入到数据库中。
-		int score = game.score;
-		
-		ScoreDao dao = new ScoreDao();
-		dao.insertScore(new Score(playerName,score));
-		
+		if(playerName!=null && !playerName.equals("")) {
+			//add to database only if player input non-empty string and press "yes"
+			int score = game.score;
+			ScoreDao dao = new ScoreDao();
+			dao.insertScore(new Score(playerName,score));
+		}
+
 		this.setEnabled(false);
 		this.setVisible(false);
 		frame.setContentPane(new StartPanel(frame));
