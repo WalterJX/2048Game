@@ -8,15 +8,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import edu.scu.Dao.GameDao;
+import edu.scu.Dao.Score;
+import edu.scu.Dao.ScoreDao;
 
 public class GamePanel extends JPanel {
 	private class Color{
@@ -106,41 +113,69 @@ public class GamePanel extends JPanel {
 		scorePanel.add(scoreTitle);
 		scorePanel.add(score);
 		
-		buttonsPanel.setLayout(new BorderLayout()); // 想让四个按钮向中间靠拢，也就是center尽可能小。
+		buttonsPanel.setLayout(new GridLayout(3,3));
 		
-		JButton up = new JButton("up");
+		JButton up = new JButton(new ImageIcon("image/up.jpg"));
+		up.setPreferredSize(new Dimension(-1,frameHeight/6));
+		up.setBorderPainted(false);
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movup();
 				frame.getContentPane().requestFocus();
 			}
 		});
-		JButton down = new JButton("down");
+		JButton down = new JButton(new ImageIcon("image/down.jpg"));
+		down.setPreferredSize(new Dimension(-1,frameHeight/6));
+		down.setBorderPainted(false);
 		down.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movdown();
 				frame.getContentPane().requestFocus();
 			}
 		});
-		JButton left = new JButton("left");
+		JButton left = new JButton(new ImageIcon("image/left.jpg"));
+		left.setPreferredSize(new Dimension(-1,frameHeight/6));
+		left.setBorderPainted(false);
 		left.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movleft();
 				frame.getContentPane().requestFocus();
 			}
 		});
-		JButton right = new JButton("right");
+		JButton right = new JButton(new ImageIcon("image/right.jpg"));
+		right.setPreferredSize(new Dimension(-1,frameHeight/6));
+		right.setBorderPainted(false);
 		right.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movright();
 				frame.getContentPane().requestFocus();
 			}
 		});
+		/*
 		buttonsPanel.add(up,BorderLayout.NORTH);
 		buttonsPanel.add(down, BorderLayout.SOUTH);
 		buttonsPanel.add(left, BorderLayout.WEST);
 		buttonsPanel.add(right,BorderLayout.EAST);
+		*/
 		
+		for(int i=0;i<9;i++) {
+			switch(i) {
+				case 1:
+					buttonsPanel.add(up);
+					break;
+				case 3:
+					buttonsPanel.add(left);
+					break;
+				case 5:
+					buttonsPanel.add(right);
+					break;
+				case 7:
+					buttonsPanel.add(down);
+					break;
+				default:
+					buttonsPanel.add(new JPanel());
+			}
+		}
 		
 		this.addKeyListener(new KeyListener() {
 
@@ -181,17 +216,32 @@ public class GamePanel extends JPanel {
 			
 		});
 		
-		
-		
 		scoreAndButtonPanel.add(scorePanel);
 		scoreAndButtonPanel.add(buttonsPanel);
 		this.add(gameMapPanel);
 		this.add(scoreAndButtonPanel);
 		
-		//??????????????????????????????????????????????????????????不知道下面这三行要不要加
 		//this.setVisible(true);
 		//this.setEnabled(true);
 		this.setFocusable(true);
+		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+				save();
+			}
+		});
+	}
+	
+	private void save() {
+		Integer[][] data = new Integer[4][4];
+		for(int i=0;i<4;i++) {
+			for(int j=0;j<4;j++) {
+				data[i][j]=game.map[i][j];
+			}
+		}
+		GameDao dao = new GameDao();
+		dao.insertScore(data);
 	}
 	
 	private void refresh() {
@@ -252,11 +302,23 @@ public class GamePanel extends JPanel {
         }
 	}
 	private void inputNameAndReturn(int res) {
+		String playerName="";
 		if(res==WIN) {
-			JOptionPane.showMessageDialog(null, "Congratulation! ", "You WIN!", JOptionPane.PLAIN_MESSAGE);
+			playerName = JOptionPane.showInputDialog("You win! Please input your name."); 
 		}
 		else if(res==LOSE) {
-			JOptionPane.showMessageDialog(null, "Sorry, the game is over, your score: " + game.score, "Game Over", JOptionPane.PLAIN_MESSAGE);
+			playerName = JOptionPane.showInputDialog("Game over. Please input your name.");  
 		}
+		//后续优化，可以在用户选择“取消cancell”时，不记录到数据库中。
+		
+		//在这里将String playerName，int score 还有系统当前日期。加入到数据库中。
+		int score = game.score;
+		
+		ScoreDao dao = new ScoreDao();
+		dao.insertScore(new Score(playerName,score));
+		
+		this.setEnabled(false);
+		this.setVisible(false);
+		frame.setContentPane(new StartPanel(frame));
 	}
 }
