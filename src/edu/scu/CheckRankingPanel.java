@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import edu.scu.Dao.Score;
@@ -89,13 +91,19 @@ public class CheckRankingPanel extends JPanel{
         gbc.weighty = 0.6;
         add(btn3, gbc);
         
+        
         gridContentPanel = new JPanel(new GridLayout(scores.size()+1, 3));
         gridContentPanel.setBackground(Color.WHITE);
+        JScrollPane scrollPane = new JScrollPane(
+        		gridContentPanel,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+        );
         gbc.gridx = 1;
         gbc.gridy = 2;
         gbc.weightx = 0.8;
         gbc.weighty = 0.6;
-        add(gridContentPanel, gbc);
+        add(scrollPane, gbc);
         
         JPanel btn5 = new JPanel();
         btn5.setBackground(Color.WHITE);
@@ -125,11 +133,18 @@ public class CheckRankingPanel extends JPanel{
 			panel.add(getLabel(score.getScore()+""));
 			panel.add(getLabel(score.getDate().toString()));
 		}
+//		for (int i = 0; i < 250 - scores.size(); i++) {
+//			panel.add(getLabel(""));
+//			panel.add(getLabel(""));
+//			panel.add(getLabel(""));
+//		}
+			
 	}
 	
 	private JLabel getLabel(String message) {
 		JLabel label = new JLabel(message, SwingConstants.CENTER);
 		label.setFont(new java.awt.Font("Font.BOLD", 1, 13));
+		//if (!message.isEmpty())
 		label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		label.setBounds(0,0,100,100);
 		return label;
