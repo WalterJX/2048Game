@@ -11,6 +11,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import edu.scu.Dao.GameDao;
@@ -150,7 +151,11 @@ public class StartPanel extends JPanel{
 		mainBoard.getContentPane().requestFocus();
 	}
 	private void exit() {
-		System.exit(0);
+		int confirmed = JOptionPane.showConfirmDialog(null, "Exit Program?","EXIT",JOptionPane.YES_NO_OPTION);
+        if(confirmed == JOptionPane.YES_OPTION)
+        {
+        	System.exit(0);
+        }
 	}
 
 	private JPanel newLine(Component c) {
