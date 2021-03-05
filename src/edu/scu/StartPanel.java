@@ -11,6 +11,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import edu.scu.Dao.GameDao;
@@ -121,6 +122,15 @@ public class StartPanel extends JPanel{
 	
 	
 	private void startNewGame() {
+		GameDao dao = new GameDao();
+		Integer[][] data = dao.getGame();
+		if (data != null) {
+			int confirmed = JOptionPane.showConfirmDialog(null, "old game will disappear, Coninue?","Warning",JOptionPane.YES_NO_OPTION);
+	        if(confirmed != JOptionPane.YES_OPTION)
+	        {
+	        	return;
+	        }
+		}
 		this.setEnabled(false);
 		this.setVisible(false);
 		mainBoard.setContentPane(new GamePanel(mainBoard)); 
@@ -130,6 +140,16 @@ public class StartPanel extends JPanel{
 		GameDao dao = new GameDao();
 		Integer[][] data = dao.getGame();
 		int [][] map = new int[4][4];
+		if (data == null || data.length == 0 || data[0].length == 0) {
+			JOptionPane.showMessageDialog(
+					mainBoard,
+                    "There is no game to continue",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+			return;
+		}
+		
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
 				map[i][j]=data[i][j];
@@ -150,7 +170,11 @@ public class StartPanel extends JPanel{
 		mainBoard.getContentPane().requestFocus();
 	}
 	private void exit() {
-		System.exit(0);
+		int confirmed = JOptionPane.showConfirmDialog(null, "Exit Program?","EXIT",JOptionPane.YES_NO_OPTION);
+        if(confirmed == JOptionPane.YES_OPTION)
+        {
+        	System.exit(0);
+        }
 	}
 
 	private JPanel newLine(Component c) {
