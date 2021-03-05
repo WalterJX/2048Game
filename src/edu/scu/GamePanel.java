@@ -247,6 +247,7 @@ public class GamePanel extends JPanel {
 				data[i][j]=game.map[i][j];
 			}
 		}
+		deleteLastGameSave();
 		GameDao dao = new GameDao();
 		dao.insertScore(data);
 	}
@@ -322,9 +323,16 @@ public class GamePanel extends JPanel {
 			ScoreDao dao = new ScoreDao();
 			dao.insertScore(new Score(playerName,score));
 		}
+		
+		deleteLastGameSave();
 
 		this.setEnabled(false);
 		this.setVisible(false);
 		frame.setContentPane(new StartPanel(frame));
+	}
+	
+	private void deleteLastGameSave() {
+		GameDao dao = new GameDao();
+		dao.deleteScore();
 	}
 }
