@@ -105,7 +105,7 @@ public class Game {
 				list.remove(0);
 				continue;
 			}
-			else if(list.get(0)==list.get(1)) {
+			else if((int)list.get(0)==(int)list.get(1)) {
 				//merge 2 numbers,then pop out two numbers in the list
 				res[pos++]=list.get(0)*2;
 				list.remove(1);
