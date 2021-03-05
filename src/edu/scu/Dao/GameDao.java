@@ -62,7 +62,7 @@ public class GameDao extends BaseDao{
         }
 		return res;
 	}
-private Integer deleteScore() {
+public Integer deleteScore() {
 		
 		int res = 0;
         try{
