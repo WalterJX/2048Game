@@ -92,13 +92,14 @@ public class CheckRankingPanel extends JPanel{
         add(btn3, gbc);
         
         
-        gridContentPanel = new JPanel(new GridLayout(scores.size()+1, 3));
+        gridContentPanel = new JPanel(new GridLayout(11, 3));
         gridContentPanel.setBackground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(
         		gridContentPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setWheelScrollingEnabled(true);
@@ -128,6 +129,7 @@ public class CheckRankingPanel extends JPanel{
 	
 	private void addLabel(JPanel panel) {
 		Collections.sort(scores, (a, b) -> (b.getScore() - a.getScore()));
+		scores = scores.subList(0, Math.min(10, scores.size()));
 		panel.add(getLabel("name"));
 		panel.add(getLabel("score"));
 		panel.add(getLabel("date"));
@@ -136,18 +138,18 @@ public class CheckRankingPanel extends JPanel{
 			panel.add(getLabel(score.getScore()+""));
 			panel.add(getLabel(score.getDate().toString()));
 		}
-//		for (int i = 0; i < 250 - scores.size(); i++) {
-//			panel.add(getLabel(""));
-//			panel.add(getLabel(""));
-//			panel.add(getLabel(""));
-//		}
+		for (int i = 0; i < 10 - scores.size(); i++) {
+			panel.add(getLabel(""));
+			panel.add(getLabel(""));
+			panel.add(getLabel(""));
+		}
 			
 	}
 	
 	private JLabel getLabel(String message) {
 		JLabel label = new JLabel(message, SwingConstants.CENTER);
 		label.setFont(new java.awt.Font("Font.BOLD", 1, 13));
-		//if (!message.isEmpty())
+		if (!message.isEmpty())
 		label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		label.setBounds(0,0,100,100);
 		return label;
