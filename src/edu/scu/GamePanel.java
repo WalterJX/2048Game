@@ -249,15 +249,18 @@ public class GamePanel extends JPanel {
 		}
 		deleteLastGameSave();
 		GameDao dao = new GameDao();
-		dao.insertScore(data);
+		dao.insertGameData(data);
 	}
 	
 	private void refresh() {
 		//update map and score
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
-				if(game.map[i][j]!=0)
+				if(game.map[i][j]!=0) {
 					blocks[i][j].setText(""+game.map[i][j]);
+					if(game.map[i][j]>=1024)
+						blocks[i][j].setFont(new java.awt.Font("Dialog", 1, 44));
+				}
 				else
 					blocks[i][j].setText("");
 				blocks[i][j].setBackground(new java.awt.Color(colorMap.get(game.map[i][j]).backGroundColor));
@@ -333,6 +336,6 @@ public class GamePanel extends JPanel {
 	
 	private void deleteLastGameSave() {
 		GameDao dao = new GameDao();
-		dao.deleteScore();
+		dao.deleteGameData();
 	}
 }

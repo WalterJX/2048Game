@@ -39,7 +39,7 @@ public class GameDao extends BaseDao{
 		return res;
 		
 	}
-	public Integer insertScore(Integer[][] game) {
+	public Integer insertGameData(Integer[][] game) {
 		
 		int res = 0;
         try{
@@ -62,7 +62,7 @@ public class GameDao extends BaseDao{
         }
 		return res;
 	}
-public Integer deleteScore() {
+public Integer deleteGameData() {
 		
 		int res = 0;
         try{
@@ -90,7 +90,7 @@ public Integer deleteScore() {
 //			}
 //		}
 		
-		dao.deleteScore();
+		dao.deleteGameData();
 	}
 	
 }
