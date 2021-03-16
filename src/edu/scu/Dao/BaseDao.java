@@ -6,7 +6,7 @@ public class BaseDao {
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
     static final String DB_URL = "jdbc:mysql://localhost:3306/2048Game?user=root&password=root&useSSL=false&serverTimezone=GMT";
     static final String USER = "root";
-    static final String PASS = "rootroot";// please change the password according to your local mysql password
+    static final String PASS = "123456";// please change the password according to your local mysql password
     static Connection conn = null;
     Statement stmt = null;
     
