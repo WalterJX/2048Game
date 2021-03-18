@@ -138,9 +138,8 @@ public class StartPanel extends JPanel{
 	}
 	private void continueGame() {
 		GameDao dao = new GameDao();
-		Integer[][] data = dao.getGame();
-		int [][] map = new int[4][4];
-		if (data == null || data.length == 0 || data[0].length == 0) {
+		Integer[][] data = dao.getGame(); // read data from the database
+		if (data == null || data.length == 0 || data[0].length == 0) { // If there is no game data in the database, pop up a warning dialog
 			JOptionPane.showMessageDialog(
 					mainBoard,
                     "There is no game to continue",
@@ -150,12 +149,14 @@ public class StartPanel extends JPanel{
 			return;
 		}
 		
+		int [][] map = new int[4][4]; // put the data into a int 2D array
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
 				map[i][j]=data[i][j];
 			}
 		}
 		
+		// go to game panel
 		this.setEnabled(false);
 		this.setVisible(false);
 		mainBoard.setContentPane(new GamePanel(mainBoard, map));

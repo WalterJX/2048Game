@@ -68,8 +68,8 @@ public class GamePanel extends JPanel {
 		refresh();
 	}
 	
-	private void initGUI() {
-		colorMap.put(0, new Color(0x776e65, 0xCDC1B4));
+	private void initGUI() { 
+		colorMap.put(0, new Color(0x776e65, 0xCDC1B4));//stores the color value of different value blocks
         colorMap.put(2, new Color(0x776e65, 0xeee4da));
         colorMap.put(4, new Color(0x776e65, 0xede0c8));
         colorMap.put(8, new Color(0xf9f6f2, 0xf2b179));
@@ -139,7 +139,7 @@ public class GamePanel extends JPanel {
 		up.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movup();
-				frame.getContentPane().requestFocus();
+				frame.getContentPane().requestFocus(); //need to make sure that the panel has focus, otherwise the keylistener won't work
 			}
 		});
 		JButton down = new JButton(new ImageIcon("image/down.jpg"));
@@ -166,7 +166,7 @@ public class GamePanel extends JPanel {
 		right.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				movright();
-				frame.getContentPane().requestFocus();
+				frame.getContentPane().requestFocus(); 
 			}
 		});
 		
@@ -189,7 +189,7 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
-		this.addKeyListener(new KeyListener() {
+		this.addKeyListener(new KeyListener() { // keyboard listener
 
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -241,15 +241,15 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void save() {
-		Integer[][] data = new Integer[4][4];
+		Integer[][] data = new Integer[4][4]; //save the current data into an Integer 2D array
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
 				data[i][j]=game.map[i][j];
 			}
 		}
-		deleteLastGameSave();
+		deleteLastGameSave(); // delete the last game save
 		GameDao dao = new GameDao();
-		dao.insertGameData(data);
+		dao.insertGameData(data);//save the data into the database
 	}
 	
 	private void refresh() {
@@ -281,11 +281,11 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void movup() {
-		game.moveUp();
-        refresh();
-        int res = checkResult();
-        if(res!=PLAYING) {
-        	inputNameAndReturn(res);
+		game.moveUp(); // game instance calculate the latest result.
+        refresh(); // update UI
+        int res = checkResult(); // check whether game has ended
+        if(res!=PLAYING) { // if game has ended
+        	inputNameAndReturn(res); // pop up a window to ask player to input player name, and then return to main menu
         }
 	}
 	private void movdown() {
@@ -314,21 +314,22 @@ public class GamePanel extends JPanel {
 	}
 	private void inputNameAndReturn(int res) {
 		String playerName="";
-		if(res==WIN) {
+		if(res==WIN) { // if player wins
 			playerName = JOptionPane.showInputDialog("You win! Please input your name."); 
 		}
-		else if(res==LOSE) {
+		else if(res==LOSE) { // if player loses
 			playerName = JOptionPane.showInputDialog("Game over. Please input your name.");  
 		}
 		if(playerName!=null && !playerName.equals("")) {
 			//add to database only if player input non-empty string and press "yes"
 			int score = game.score;
 			ScoreDao dao = new ScoreDao();
-			dao.insertScore(new Score(playerName,score));
+			dao.insertScore(new Score(playerName,score)); //save current socres and names to the database
 		}
 		
-		deleteLastGameSave();
-
+		deleteLastGameSave();//delete the current game save because the game has ended
+		
+		//return to main menu
 		this.setEnabled(false);
 		this.setVisible(false);
 		frame.setContentPane(new StartPanel(frame));
