@@ -30,14 +30,13 @@ public class GameDao extends BaseDao{
 	private Integer[][] getGame(ResultSet rs) throws SQLException {
 		Integer[][] res = new Integer[4][4];
 		String[] strs = {"zero","one","two","three"};
-		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				res[i][j] = rs.getInt(strs[i]+"_"+strs[j]);
+				
 			}
 		}
 		return res;
-		
 	}
 	public Integer insertGameData(Integer[][] game) {
 		
@@ -51,10 +50,7 @@ public class GameDao extends BaseDao{
     				ps.setInt(idx++, game[i][j]);
     			}
     		}
-
     		res = ps.executeUpdate();
-
-            
             stmt.close();
             conn.close();
         }catch(Exception se){
@@ -62,6 +58,7 @@ public class GameDao extends BaseDao{
         }
 		return res;
 	}
+	
 public Integer deleteGameData() {
 		
 		int res = 0;
