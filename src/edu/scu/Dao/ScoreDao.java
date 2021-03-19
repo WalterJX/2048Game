@@ -29,6 +29,7 @@ public class ScoreDao extends BaseDao{
         }
 		return res;
 	}
+	
 	public Integer insertScore(Score score) {
 		
 		int res = 0;
@@ -38,10 +39,7 @@ public class ScoreDao extends BaseDao{
     		ps.setString(1,score.getName());
     		ps.setInt(2, score.getScore());
     		ps.setDate(3, new java.sql.Date(new java.util.Date().getTime()));
-
     		res = ps.executeUpdate();
-
-            
             stmt.close();
             conn.close();
         }catch(Exception se){
