@@ -8,8 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+/*
+ * Inherit BaseDao to achieve Score database connection
+ * */
+
 public class ScoreDao extends BaseDao{
 	
+	// get all scores information from scores table
 	public List<Score> getAllScores() {
 		List<Score> res = new ArrayList<>();
 		
@@ -30,6 +36,7 @@ public class ScoreDao extends BaseDao{
 		return res;
 	}
 	
+	// insert score to scores table
 	public Integer insertScore(Score score) {
 		
 		int res = 0;
@@ -47,6 +54,8 @@ public class ScoreDao extends BaseDao{
         }
 		return res;
 	}
+	
+	// test scores table function
 	public static void main(String[] args) {
 		ScoreDao dao = new ScoreDao();
 		for (Score s : dao.getAllScores()) {

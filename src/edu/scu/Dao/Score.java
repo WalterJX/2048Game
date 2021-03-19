@@ -2,6 +2,9 @@ package edu.scu.Dao;
 
 import java.util.Date;
 
+/*
+ * score entity
+ * */
 public class Score {
 	private int id;
 	private String name;

@@ -1,7 +1,8 @@
 
-you need to set you database information in properties/jdbc.properties firstly;
+1. you need to set you database information in Dao.BaseDao firstly;
 
 And then use following sql sentences build database;
+
 
 create database 2048Game;
 use 2048Game;
@@ -32,6 +33,11 @@ CREATE TABLE `2048Game`.`games` (
   `three_one` INT NULL,
   `three_two` INT NULL,
   `three_three` INT NULL);
+
+
+
+2. After finishing above steps,
+you can run project from Start.java
 
 
 
