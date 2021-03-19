@@ -10,20 +10,20 @@ public class Game {
 	int winCondition=2048;
 	int score=0;
 	
-	Game(){
+	Game(){  // initialize new game
 		map = new int[4][4];
 		initGame();
 	}
 	
-	Game(int[][] data) {
+	Game(int[][] data) { // initialize game with loaded data
 		map=data;
 	}
 	
-	Game(int winC){
+	Game(int winC){ //initialize game with specific win condition. for example, if winCondition=32, the player will win if a block has value 32.
 		winCondition=winC;
 		initGame();
 	}
-	Game(int[][] data, int winC){
+	Game(int[][] data, int winC){ // initialize game with specific win condition, and load data
 		map=data;
 		winCondition=winC;
 	}
@@ -35,22 +35,22 @@ public class Game {
 		createNewBlock(4);
 	}
 	
-	public void createNewBlock() {
-		int pos[] = randomPos();
-		if(pos[0]!=-1) {
-			if(Math.random()>0.5)
+	public void createNewBlock() { // create "2" or "4" block in blank block
+		int pos[] = randomPos(); // get a random blank block position
+		if(pos[0]!=-1) { // if there is a blank position
+			if(Math.random()>0.5) //create "2" or "4" block randomly.
 				map[pos[0]][pos[1]]=2;
 			else
 				map[pos[0]][pos[1]]=4;
 		}
 	}
-	public void createNewBlock(int value) {
+	public void createNewBlock(int value) { // create a block in a random blank position with specific value
 		int pos[] = randomPos();
 		if(pos[0]!=-1) 
 			map[pos[0]][pos[1]]=value;
 	}
 	
-	public int[] randomPos() {
+	public int[] randomPos() { // get a random position of '0' block (blank block)
 		List<int[]> positions = new ArrayList<int[]>();
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
@@ -63,7 +63,7 @@ public class Game {
 		if(positions.size()>0) {
 			random = positions.get((int)(Math.random()*positions.size()));
 		}
-		else {
+		else { // there is no empty blocks
 			random[0]=-1;//no empty blocks
 		}
 		return random;
