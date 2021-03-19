@@ -6,8 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Inherit BaseDao to achieve Game database connection
+ * */
+
 public class GameDao extends BaseDao{
 	
+	// get all game information
 	public Integer[][] getGame() {
 		Integer[][] game = null;
 		
@@ -27,6 +32,8 @@ public class GameDao extends BaseDao{
         }
 		return game;
 	}
+	
+	// a helper to access every column in game table
 	private Integer[][] getGame(ResultSet rs) throws SQLException {
 		Integer[][] res = new Integer[4][4];
 		String[] strs = {"zero","one","two","three"};
@@ -38,6 +45,7 @@ public class GameDao extends BaseDao{
 		}
 		return res;
 	}
+	// insert gamedate to game table
 	public Integer insertGameData(Integer[][] game) {
 		
 		int res = 0;
@@ -59,7 +67,8 @@ public class GameDao extends BaseDao{
 		return res;
 	}
 	
-public Integer deleteGameData() {
+	// delete the first data in game table
+	public Integer deleteGameData() {
 		
 		int res = 0;
         try{
@@ -75,6 +84,7 @@ public Integer deleteGameData() {
 		return res;
 	}
 
+	// test game table functions
 	public static void main(String[] args) {
 		GameDao dao = new GameDao();
 //		Integer[][] array = {{1,2,3,4},{0,2,3,3}, {5,6,7,8}, {1,2,3,4}};

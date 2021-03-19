@@ -16,8 +16,11 @@ import javax.swing.JPanel;
 
 import edu.scu.Dao.GameDao;
 
+/* 
+ * menu page panel
+ * */
 public class StartPanel extends JPanel{
-	
+	// define components
 	private JFrame mainBoard;
 	private JPanel menu;
 	private JButton btn_start;
@@ -25,15 +28,15 @@ public class StartPanel extends JPanel{
 	private JButton btn_scores;
 	private JButton btn_exit;
 	
+	// constructor with JFrame parameter
 	public StartPanel(JFrame mainBoard) {
 		this.mainBoard = mainBoard; 
 		initUI();
 		addActionListener();
 	}
 	
+	// init components
 	private void initUI() {
-		
-		
 		setBackground(Color.WHITE);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(newLine(Box.createVerticalStrut(25)));
@@ -84,6 +87,7 @@ public class StartPanel extends JPanel{
 		
 	}
 	
+	// add actionlistener to every button
 	private void addActionListener() {
 		btn_start.addActionListener(new ActionListener() {
 
@@ -120,10 +124,11 @@ public class StartPanel extends JPanel{
 		});
 	}
 	
-	
+	// new game function
 	private void startNewGame() {
 		GameDao dao = new GameDao();
 		Integer[][] data = dao.getGame();
+		// test whether there is an unfinished game
 		if (data != null) {
 			int confirmed = JOptionPane.showConfirmDialog(null, "old game will disappear, Coninue?","Warning",JOptionPane.YES_NO_OPTION);
 	        if(confirmed != JOptionPane.YES_OPTION)
@@ -131,15 +136,19 @@ public class StartPanel extends JPanel{
 	        	return;
 	        }
 		}
+		// change contentpanel to gamepanel
 		this.setEnabled(false);
 		this.setVisible(false);
 		mainBoard.setContentPane(new GamePanel(mainBoard)); 
 		mainBoard.getContentPane().requestFocus();//must request focus here instead of in the gamepanel, because requestFocus only works after jpanel render
 	}
+	
+	// continue game function
 	private void continueGame() {
 		GameDao dao = new GameDao();
 		Integer[][] data = dao.getGame();
 		int [][] map = new int[4][4];
+		// test whether there is an unfinished game
 		if (data == null || data.length == 0 || data[0].length == 0) {
 			JOptionPane.showMessageDialog(
 					mainBoard,
@@ -155,7 +164,7 @@ public class StartPanel extends JPanel{
 				map[i][j]=data[i][j];
 			}
 		}
-		
+		// change contentpanel to game panel
 		this.setEnabled(false);
 		this.setVisible(false);
 		mainBoard.setContentPane(new GamePanel(mainBoard, map));
@@ -163,12 +172,16 @@ public class StartPanel extends JPanel{
 		
 		
 	}
+	
+	// change contentpanel to checking ranking panel
 	private void seeRanking() {
 		this.setEnabled(false);
 		this.setVisible(false);
 		mainBoard.setContentPane(new CheckRankingPanel(mainBoard)); 
 		mainBoard.getContentPane().requestFocus();
 	}
+	
+	// exit button function
 	private void exit() {
 		int confirmed = JOptionPane.showConfirmDialog(null, "Exit Program?","EXIT",JOptionPane.YES_NO_OPTION);
         if(confirmed == JOptionPane.YES_OPTION)
@@ -177,6 +190,7 @@ public class StartPanel extends JPanel{
         }
 	}
 
+	// helper for make all components aligned
 	private JPanel newLine(Component c) {
 		
 		JPanel jp = new JPanel();

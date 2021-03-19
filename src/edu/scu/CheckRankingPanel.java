@@ -23,6 +23,7 @@ import edu.scu.Dao.Score;
 import edu.scu.Dao.ScoreDao;
 
 public class CheckRankingPanel extends JPanel{
+	// define component
 	private JFrame frame;
 	private List<Score> scores;
 	private JPanel gridContentPanel;
@@ -31,23 +32,25 @@ public class CheckRankingPanel extends JPanel{
 	private JPanel leftSpace;
 	private JPanel rightSpace;
 	
+	// Constructor with JFrame
 	public CheckRankingPanel(JFrame frame) {
 		this.frame = frame;
-		//scores = new ArrayList<>();
 		scores = new ScoreDao().getAllScores();
 		init();
 	}
 	
 	
+	// init component
 	private void init() {
+		// background color
 		setBackground(Color.WHITE);
-		
 		setLayout(new GridBagLayout());
+		
+		// use gridbaglayout
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         
         exit = new JButton("Menu");
-        //exit.setBorder(null);
         exit.setFont(new java.awt.Font("Font.BOLD", 1, 15));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -92,6 +95,7 @@ public class CheckRankingPanel extends JPanel{
         add(btn3, gbc);
         
         
+        // add gridlayout to content panel
         gridContentPanel = new JPanel(new GridLayout(11, 3));
         gridContentPanel.setBackground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(
@@ -99,6 +103,8 @@ public class CheckRankingPanel extends JPanel{
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
         );
+        
+        // make score panel scrollable
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -127,6 +133,7 @@ public class CheckRankingPanel extends JPanel{
 	}
 	
 	
+	// add cell to gridlayout
 	private void addLabel(JPanel panel) {
 		Collections.sort(scores, (a, b) -> (b.getScore() - a.getScore()));
 		scores = scores.subList(0, Math.min(10, scores.size()));
@@ -146,6 +153,7 @@ public class CheckRankingPanel extends JPanel{
 			
 	}
 	
+	// Decorate each grid
 	private JLabel getLabel(String message) {
 		JLabel label = new JLabel(message, SwingConstants.CENTER);
 		label.setFont(new java.awt.Font("Font.BOLD", 1, 13));
